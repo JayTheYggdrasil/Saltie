@@ -2,7 +2,6 @@ from actions.action_container import ActionContainer
 from rlbot.agents.base_agent import BaseAgent, SimpleControllerState
 from rlbot.utils.structures.game_data_struct import GameTickPacket
 from user_interface import TrainingUI
-from keyboard_interface import reader
 import time
 from inputs import get_key
 from RLUtilities.GameInfo import GameInfo
@@ -45,6 +44,8 @@ class DefaultAgent(BaseAgent):
         self.ui = TrainingUI(self.actions)
         self.model = ModelBox(self.actions.num_actions(), index, team)
         self.controls = SimpleControllerState()
+        from keyboard_interface import reader
+        self.reader = reader
 
         if model1_path != None:
             self.model.load(model1_path)
@@ -56,18 +57,17 @@ class DefaultAgent(BaseAgent):
 
     def get_output(self, packet: GameTickPacket) -> SimpleControllerState:
         self.info.read_packet(packet)
-        events = get_key()
         action = self.model.predict(packet=packet)
 
         if self.flags["train"]:
-            self.ui.update_tick(action, reader.intended_index)
-            self.model.fit(self.ui.intended_index, packet=packet)
+            self.model.fit(self.reader.intended_index, packet=packet)
 
         if self.flags["transfer"]:
             self.model2.fit(action, packet=packet)
 
         self.renderer.begin_rendering()
         if self.flags["render"]:
+            self.ui.update_tick(action, self.reader.intended_index)
             self.ui.render(self.renderer)
         self.renderer.end_rendering()
 

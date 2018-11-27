@@ -3,6 +3,7 @@ from actions.action_container import ActionContainer
 class TrainingUI:
     def __init__(self, action_container: ActionContainer):
         self.action_names = action_container.get_names()
+        self.codes = "QWERTYUIOPASDFGHJKLZXCVBNM"
         self.intended_index = 0
         self.current_index = 0
 
