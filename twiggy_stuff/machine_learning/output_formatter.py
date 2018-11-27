@@ -11,6 +11,6 @@ class OutputFormatter:
         return self.num_actions
 
     def create_array_for_training(self, target_action_index):
-        target_action = torch.Tensor.new_zeros(self.num_actions)
+        target_action = torch.zeros(self.num_actions)
         target_action[target_action_index] = 1
         return target_action

@@ -36,12 +36,13 @@ class ATBF:
     def __init__(self):
         self.flipping = False
         self.time = time.time()
+        self.act = None
     def get_controls(self, info: GameInfo):
-        if self.time + 3/60 < time.time():
+        if self.act == None or self.act.finished:
             self.make_new(info)
         self.act.step(1/60)
         return self.act.controls
 
         self.time = time.time()
     def make_new(self, info: GameInfo):
-        self.act = AirDodge(info.my_car, duration=0.5, target=info.ball.pos, dodge_time=0.1)
+        self.act = AirDodge(info.my_car, duration=0.5, target=info.ball.pos, dodge_time=0.05)

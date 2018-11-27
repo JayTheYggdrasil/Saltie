@@ -14,8 +14,7 @@ class Reader:
             events = get_key()
             for event in events:
                 for c in self.codes:
-                    if prefix + c == event.code:
-                        self.intended_index = min(self.codes.index(c), self.action_num-1)
-                        print(self.intended_index)
+                    if prefix + c == event.code and self.codes.index(c) < self.action_num:
+                        self.intended_index = self.codes.index(c)
 reader = Reader(ActionContainer().num_actions())
-threading.Thread(target=reader.update_key).start()
+threading.Thread(target=reader.update_key, daemon=True).start()

@@ -35,7 +35,7 @@ class DefaultAgent(BaseAgent):
 
         self.flags = {
             "render": True,
-            "train": False,
+            "train": True,
             "transfer": False
         }
 
@@ -64,6 +64,7 @@ class DefaultAgent(BaseAgent):
 
         if self.flags["transfer"]:
             self.model2.fit(action, packet=packet)
+            action = self.model2.predict(packet=packet)
 
         self.renderer.begin_rendering()
         if self.flags["render"]:

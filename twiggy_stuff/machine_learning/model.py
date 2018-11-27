@@ -33,7 +33,7 @@ class Model(nn.Module):
         for _ in range(epochs):
             for i in range(len(x)):
                 self.optimizer.zero_grad()
-                action=self.forward(x[i])
+                action=self.predict(x[i])
                 loss=self.loss(action, target[i])
                 loss.backward()
                 self.optimizer.step()

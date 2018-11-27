@@ -16,7 +16,7 @@ class ModelBox:
         self.model.create_input_layer(self.input_f)
         self.model.create_hidden_layers()
         self.model.create_output_layer(self.output_f)
-        self.model.finalize_model()
+        self.model.finalize_model(lr=5)
 
     def predict(self, packet=None, replay_tick=None):
         if packet != None:
@@ -32,7 +32,7 @@ class ModelBox:
 
         return output
 
-    def fit(action_index, packet=None, replay_tick=None):
+    def fit(self, action_index, packet=None, replay_tick=None):
         target = self.output_f.create_array_for_training(action_index)
 
         if packet != None:
@@ -43,8 +43,8 @@ class ModelBox:
             print("Missing Arguments")
             raise SyntaxError
 
-        self.model.fit([data], [target])
-
+        loss = self.model.fit([data], [target])
+        print(loss)
     def load(self, filepath):
         self.model.load(filepath)
 
